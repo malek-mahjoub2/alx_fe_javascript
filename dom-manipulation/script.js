@@ -13,25 +13,28 @@ async function fetchQuotesFromServer() {
   }
   
   // Function to sync data with the server (simulated)
-  async function syncData() {
-    const serverUrl = 'https://jsonplaceholder.typicode.com/posts'; // Replace with your actual server URL
-  
+  async function syncQuotes() {
     try {
-      const response = await fetch(serverUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(quotes)
+      const serverQuotes = await fetchQuotesFromServer();
+  
+      // Compare local and server quotes
+      const updatedQuotes = serverQuotes.map(serverQuote => {
+        const existingQuote = quotes.find(localQuote => localQuote.id === serverQuote.id);
+        if (existingQuote) {
+          // Handle conflicts here (e.g., merge changes)
+          return { ...existingQuote, ...serverQuote };
+        } else {
+          return serverQuote;
+        }
       });
   
-      if (response.ok) {
-        const updatedQuotes = await response.json();
-        // Handle the updated quotes as needed
-        console.log('Data synced successfully:', updatedQuotes);
-      } else {
-        console.error('Error syncing data:', response.statusText);
-      }
+      // Update local quotes and save to local storage
+      quotes = updatedQuotes;
+      saveQuotes();
+  
+      // Update UI
+      filterQuotes();
+      alert('Data synced successfully!');
     } catch (error) {
       console.error('Error syncing data:', error);
       alert('Failed to sync data. Please try again later.');
