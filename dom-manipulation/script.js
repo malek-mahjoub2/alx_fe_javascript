@@ -5,6 +5,32 @@ let quotes = [
     { text: "Life is what happens when you're busy making other plans.", category: "Life" }
   ];
   
+  // Function to create the add quote form (if needed)
+  function createAddQuoteForm() {
+    const form = document.createElement('div');
+    form.id = 'addQuoteForm';
+  
+    const newQuoteText = document.createElement('input');
+    newQuoteText.id = 'newQuoteText';
+    newQuoteText.type = 'text';
+    newQuoteText.placeholder = 'Enter a new quote';
+  
+    const newQuoteCategory = document.createElement('input');
+    newQuoteCategory.id = 'newQuoteCategory';
+    newQuoteCategory.type = 'text';
+    newQuoteCategory.placeholder = 'Enter quote category';
+  
+    const addQuoteButton = document.createElement('button');
+    addQuoteButton.id = 'addQuoteButton';
+    addQuoteButton.textContent = 'Add Quote';
+  
+    form.appendChild(newQuoteText);
+    form.appendChild(newQuoteCategory);
+    form.appendChild(addQuoteButton);
+  
+    document.body.appendChild(form);
+  }
+  
   // Function to display a random quote
   function showRandomQuote() {
     const randomIndex = Math.floor(Math.random() * quotes.length);
