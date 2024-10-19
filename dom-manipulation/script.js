@@ -27,6 +27,7 @@ async function fetchQuotesFromServer() {
           return serverQuote;
         }
       });
+      script.js doesn't contain: ["method", "POST", "JSON.stringify", "headers", "application/json", "Content-Type"]
   
       // Update local quotes and save to local storage
       quotes = updatedQuotes;
