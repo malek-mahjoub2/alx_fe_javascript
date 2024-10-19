@@ -104,78 +104,49 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
-// Function to sync data with the server (simulated)
-function syncData() {
+// Function to fetch quotes from the server (simulated)
+async function fetchQuotesFromServer() {
   const serverUrl = 'https://jsonplaceholder.typicode.com/posts'; // Replace with your actual server URL
 
-  // Fetch quotes from the server
-  fetch(serverUrl)
-    .then(response => response.json())
-    .then(serverQuotes => {
-      // Compare local and server quotes
-      const updatedQuotes = serverQuotes.map(serverQuote => {
-        const existingQuote = quotes.find(localQuote => localQuote.id === serverQuote.id);
-        if (existingQuote) {
-          // Handle conflicts here (e.g., merge changes)
-          return { ...existingQuote, ...serverQuote };
-        } else {
-          return serverQuote;
-        }
-      });
-
-      // Update local quotes and save to local storage
-      quotes = updatedQuotes;
-      saveQuotes();
-
-      // Update UI
-      filterQuotes();
-      alert('Data synced successfully!');
-    })
-    .catch(error => {
-      console.error('Error syncing data:', error);
-      alert('Failed to sync data. Please try again later.');
-    });
+  try {
+    const response = await fetch(serverUrl);
+    const serverQuotes = await response.json();
+    return serverQuotes;
+  } catch (error) {
+    console.error('Error fetching quotes from server:', error);
+    return []; // Return an empty array in case of error
+  }
 }
-// Function to fetch quotes from the server (simulated)
-function fetchQuotesFromServer() {
-    const serverUrl = 'https://jsonplaceholder.typicode.com/posts'; // Replace with your actual server URL
-  
-    return fetch(serverUrl)
-      .then(response => response.json())
-      .catch(error => {
-        console.error('Error fetching quotes from server:', error);
-        return []; // Return an empty array in case of error
-      });
+
+// Function to sync data with the server (simulated)
+async function syncData() {
+  try {
+    const serverQuotes = await fetchQuotesFromServer();
+
+    // Compare local and server quotes
+    const updatedQuotes = serverQuotes.map(serverQuote => {
+      const existingQuote = quotes.find(localQuote => localQuote.id === serverQuote.id);
+      if (existingQuote) {
+        // Handle conflicts here (e.g., merge changes)
+        return { ...existingQuote, ...serverQuote };
+      } else {
+        return serverQuote;
+      }
+    });
+
+    // Update local quotes and save to local storage
+    quotes = updatedQuotes;
+    saveQuotes();
+
+    // Update UI
+    filterQuotes();
+    alert('Data synced successfully!');
+  } catch (error) {
+    console.error('Error syncing data:', error);
+    alert('Failed to sync data. Please try again later.');
   }
-  
-  // Function to sync data with the server (simulated)
-  function syncData() {
-    fetchQuotesFromServer()
-      .then(serverQuotes => {
-        // Compare local and server quotes
-        const updatedQuotes = serverQuotes.map(serverQuote => {
-          const existingQuote = quotes.find(localQuote => localQuote.id === serverQuote.id);
-          if (existingQuote) {
-            // Handle conflicts here (e.g., merge changes)
-            return { ...existingQuote, ...serverQuote };
-          } else {
-            return serverQuote;
-          }
-        });
-  
-        // Update local quotes and save to local storage
-        quotes = updatedQuotes;
-        saveQuotes();
-  
-        // Update UI
-        filterQuotes();
-        alert('Data synced successfully!');
-      })
-      .catch(error => {
-        console.error('Error syncing data:', error);
-        alert('Failed to sync data. Please try again later.');
-      });
-  }
+}
+
 // Event listeners
 document.getElementById('newQuote').addEventListener('click', addQuote);
 document.getElementById('addQuoteButton').addEventListener('click', addQuote);
