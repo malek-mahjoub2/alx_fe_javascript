@@ -75,7 +75,12 @@ function addQuote() {
 function saveQuotes() {
   localStorage.setItem('quotes', JSON.stringify(quotes));
 }
-
+function showRandomQuote() {
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    const quote = quotes[randomIndex];
+    const quoteDisplay = document.getElementById('quoteDisplay');
+    quoteDisplay.innerHTML = `<p><strong>${quote.category}:</strong> ${quote.text}</p>`;
+  }
 // Function to export quotes as JSON
 function exportQuotes() {
   const quoteData = JSON.stringify(quotes);
