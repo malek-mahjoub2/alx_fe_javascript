@@ -35,7 +35,10 @@ let quotes = [
   }
   
   // Event listener for the "Show New Quote" button
-  document.getElementById('newQuote').addEventListener('click', addQuote);
+  document.getElementById('newQuote').addEventListener('click', showRandomQuote);
+  
+  // Event listener for the "Add Quote" button
+  document.getElementById('addQuoteButton').addEventListener('click', addQuote);
   
   // Optional: Show a random quote when the page loads
   window.onload = showRandomQuote;
