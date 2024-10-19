@@ -75,12 +75,7 @@ function addQuote() {
 function saveQuotes() {
   localStorage.setItem('quotes', JSON.stringify(quotes));
 }
-function showRandomQuote() {
-    const randomIndex = Math.floor(Math.random() * quotes.length);
-    const quote = quotes[randomIndex];
-    const quoteDisplay = document.getElementById('quoteDisplay');
-    quoteDisplay.innerHTML = `<p><strong>${quote.category}:</strong> ${quote.text}</p>`;
-  }
+
 // Function to export quotes as JSON
 function exportQuotes() {
   const quoteData = JSON.stringify(quotes);
@@ -109,10 +104,44 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
+// Function to sync data with the server (simulated)
+function syncData() {
+  const serverUrl = 'https://jsonplaceholder.typicode.com/posts'; // Replace with your actual server URL
+
+  // Fetch quotes from the server
+  fetch(serverUrl)
+    .then(response => response.json())
+    .then(serverQuotes => {
+      // Compare local and server quotes
+      const updatedQuotes = serverQuotes.map(serverQuote => {
+        const existingQuote = quotes.find(localQuote => localQuote.id === serverQuote.id);
+        if (existingQuote) {
+          // Handle conflicts here (e.g., merge changes)
+          return { ...existingQuote, ...serverQuote };
+        } else {
+          return serverQuote;
+        }
+      });
+
+      // Update local quotes and save to local storage
+      quotes = updatedQuotes;
+      saveQuotes();
+
+      // Update UI
+      filterQuotes();
+      alert('Data synced successfully!');
+    })
+    .catch(error => {
+      console.error('Error syncing data:', error);
+      alert('Failed to sync data. Please try again later.');
+    });
+}
+
 // Event listeners
 document.getElementById('newQuote').addEventListener('click', addQuote);
 document.getElementById('addQuoteButton').addEventListener('click', addQuote);
 document.getElementById('exportQuotes').addEventListener('click', exportQuotes);
+document.getElementById('syncData').addEventListener('click', syncData);
 
 // Show a random quote on page load
 window.onload = () => {
