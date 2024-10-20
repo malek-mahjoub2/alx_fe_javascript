@@ -1,5 +1,16 @@
 // Function to fetch quotes from the server (simulated)
-
+sync function fetchQuotesFromServer() {
+    const serverUrl = 'https://jsonplaceholder.typicode.com/posts'; // Replace with your actual server URL
+  
+    try {
+      const response = await fetch(serverUrl);
+      const serverQuotes = await response.json();
+      return serverQuotes;
+    } catch (error) {
+      console.error('Error fetching quotes from server:', error);
+      return [];
+    }
+  }
 async function fetchQuotesFromServer() {
 
         const serverUrl = 'https://jsonplaceholder.typicode.com/posts'; // Replace with your actual server URL
