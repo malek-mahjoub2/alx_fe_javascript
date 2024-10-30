@@ -100,6 +100,22 @@ function exportQuotes() {
 
   URL.revokeObjectURL(url); // Clean up the temporary URL
 }
+function importFromJsonFile(event) {
+  const fileReader = new FileReader(); // Add this line
+
+  fileReader.onload = function(event) {
+    try {
+      const importedQuotes = JSON.parse(event.target.result);
+      quotes.push(...importedQuotes);
+      localStorage.setItem('quotes', JSON.stringify(quotes)); // Save updated quotes
+      alert('Quotes imported successfully!');
+    } catch (error) {
+      alert('Error importing quotes: ' + error.message);
+    }
+  };
+
+  fileReader.readAsText(event.target.files[0]); // Add this line
+}
 // Initial setup
 window.onload = () => {
   // Load quotes from local storage
