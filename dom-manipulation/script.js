@@ -88,6 +88,18 @@ function filterQuotes() {
   // ... (implementation to update the quote display)
 }
 
+function exportQuotes() {
+  const quotesJson = JSON.stringify(quotes);
+  const blob = new Blob([quotesJson], { type: 'application/json' }); // Add this line
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'quotes.json';
+  link.click();
+
+  URL.revokeObjectURL(url); // Clean up the temporary URL
+}
 // Initial setup
 window.onload = () => {
   // Load quotes from local storage
