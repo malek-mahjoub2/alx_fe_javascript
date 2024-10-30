@@ -12,9 +12,6 @@ function showRandomQuote() {
 
   const quoteDisplay = document.getElementById("quoteDisplay");
   quoteDisplay.innerHTML = `<h2>${randomQuote.text}</h2><p>Category: ${randomQuote.category}</p>`;
-
-  // Store the last viewed quote index in session storage
-  sessionStorage.setItem('lastViewedQuote', randomIndex);
 }
 
 // Function to create and display a form for adding new quotes
@@ -59,40 +56,13 @@ function addQuote() {
     // Save quotes to local storage
     localStorage.setItem('quotes', JSON.stringify(quotes));
 
+    // Update the category filter options
+    populateCategories();
+
     showRandomQuote(); // Display the newly added quote
   } else {
     alert("Please enter both quote text and category.");
   }
-}
-
-// Function to export quotes as JSON
-function exportQuotes() {
-  const quotesJson = JSON.stringify(quotes);
-  const blob = new Blob([quotesJson], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = 'quotes.json';
-  link.click();
-
-  URL.revokeObjectURL(url); // Clean up the temporary URL
-}
-
-// Function to import quotes from a JSON file
-function importFromJsonFile(event) {
-  const fileReader = new FileReader();
-  fileReader.onload = function(event) {
-    try {
-      const importedQuotes = JSON.parse(event.target.result);
-      quotes.push(...importedQuotes);
-      localStorage.setItem('quotes', JSON.stringify(quotes)); // Save updated quotes
-      alert('Quotes imported successfully!');
-    } catch (error) {
-      alert('Error importing quotes: ' + error.message);
-    }
-  };
-  fileReader.readAsText(event.target.files[0]);
 }
 
 // Function to populate the category filter options
@@ -115,9 +85,18 @@ function filterQuotes() {
   const filteredQuotes = selectedCategory === "all" ? quotes : quotes.filter(quote => quote.category === selectedCategory);
 
   // Update the quote display with filtered quotes
-  const quoteDisplay = document.getElementById("quoteDisplay");
-  if (filteredQuotes.length > 0) {
-    const randomIndex = Math.floor(Math.random() * filteredQuotes.length);
-    const randomQuote = filteredQuotes[randomIndex];
-    quoteDisplay.innerHTML = `<h2>${randomQuote.text}</h2>` 
-  }}
+  // ... (implementation to update the quote display)
+}
+
+// Initial setup
+window.onload = () => {
+  // Load quotes from local storage
+  const storedQuotes = localStorage.getItem('quotes');
+  if (storedQuotes) {
+    quotes = JSON.parse(storedQuotes);
+  }
+
+  populateCategories();
+  showRandomQuote();
+  createAddQuoteForm();
+};
