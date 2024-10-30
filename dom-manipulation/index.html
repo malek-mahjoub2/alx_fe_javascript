@@ -8,6 +8,10 @@
 <body>
   <h1>Dynamic Quote Generator</h1>
   <div id="quoteDisplay"></div>
+  <button id="addQuoteButton">Add Quote</button>
+  <button id="exportButton">Export Quotes</button>
+  <input type="file" id="importFile" accept=".json">
+
   <select id="categoryFilter" onchange="filterQuotes()">
     <option value="all">All Categories</option>
   </select>
