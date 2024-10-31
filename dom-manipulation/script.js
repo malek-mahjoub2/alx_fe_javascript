@@ -192,6 +192,24 @@ async function postQuoteToServer(newQuote) {
     // Handle network errors or other exceptions
   }
 }
+async function syncQuotes() {
+  try {
+    // Fetch quotes from the server
+    const response = await fetch('https://your-server-api-endpoint'); // Replace with your actual API endpoint
+    const serverQuotes = await response.json();
+
+    // Update local quotes and local storage
+    quotes = serverQuotes;
+    localStorage.setItem('quotes', JSON.stringify(quotes));
+
+    // Update the UI
+    populateCategories();
+    showRandomQuote();
+  } catch (error) {
+    console.error('Error syncing quotes:', error);
+    // Handle errors, e.g., display an error message to the user
+  }
+}
 // Initial setup
 window.onload = () => {
   // Load quotes from local storage
