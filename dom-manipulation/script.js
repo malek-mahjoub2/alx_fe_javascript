@@ -222,4 +222,5 @@ window.onload = () => {
   showRandomQuote();
   createAddQuoteForm();
   fetchQuotesFromServer();
+  syncQuotes(); 
 };
