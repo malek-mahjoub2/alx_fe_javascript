@@ -149,9 +149,10 @@ function importFromJsonFile(event) {
 
   fileReader.readAsText(event.target.files[0]); // Add this line
 }
+
 async function fetchQuotesFromServer() {
   try {
-    const response = await fetch('https://jsonplaceholder.typicode.com/posts'); // Use the JSONPlaceholder endpoint
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts'); // Replace with your actual API endpoint
     const data = await response.json();
 
     // Filter for posts with "quote" in the title (optional)
@@ -166,6 +167,29 @@ async function fetchQuotesFromServer() {
   } catch (error) {
     console.error('Error fetching quotes:', error);
     // Handle errors, e.g., display an error message to the user
+  }
+}
+async function postQuoteToServer(newQuote) {
+  try {
+    const response = await fetch('https://your-mock-api-endpoint', { // Replace with your actual API endpoint
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newQuote)
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Quote posted successfully:', data);
+      // Handle success, e.g., update the UI or show a success message
+    } else {
+      console.error('Error posting quote:', response.statusText);
+      // Handle errors, e.g., display an error message to the user
+    }
+  } catch (error) {
+    console.error('Error posting quote:', error);
+    // Handle network errors or other exceptions
   }
 }
 // Initial setup
