@@ -149,7 +149,25 @@ function importFromJsonFile(event) {
 
   fileReader.readAsText(event.target.files[0]); // Add this line
 }
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts'); // Use the JSONPlaceholder endpoint
+    const data = await response.json();
 
+    // Filter for posts with "quote" in the title (optional)
+    const quotesData = data.filter(post => post.title.toLowerCase().includes('quote'));
+
+    // Update quotes and local storage
+    quotes = quotesData; // Use the filtered data or all data based on your needs
+    localStorage.setItem('quotes', JSON.stringify(quotes));
+
+    populateCategories();
+    showRandomQuote();
+  } catch (error) {
+    console.error('Error fetching quotes:', error);
+    // Handle errors, e.g., display an error message to the user
+  }
+}
 // Initial setup
 window.onload = () => {
   // Load quotes from local storage
@@ -161,17 +179,5 @@ window.onload = () => {
   populateCategories();
   showRandomQuote();
   createAddQuoteForm();
+  fetchQuotesFromServer();
 };
-async function fetchQuotesFromServer() {
-  try {
-    const response = await fetch('https://your-server-api-endpoint'); // Replace with your actual API endpoint
-    const data = await response.json();
-    quotes = data;
-    localStorage.setItem('quotes', JSON.stringify(quotes));
-    populateCategories();
-    showRandomQuote();
-  } catch (error) {
-    console.error('Error fetching quotes:', error);
-
-  }
-}
