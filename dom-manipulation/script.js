@@ -210,7 +210,11 @@ async function syncQuotes() {
     // Handle errors, e.g., display an error message to the user
   }
 }
-// Initial setup
+
+// Set up periodic syncing (e.g., every 5 minutes)
+setInterval(syncQuotes, 300000); // Adjust the interval as needed
+
+
 window.onload = () => {
   // Load quotes from local storage
   const storedQuotes = localStorage.getItem('quotes');
