@@ -87,6 +87,27 @@ function filterQuotes() {
   // Update the quote display with filtered quotes
   // ... (implementation to update the quote display)
 }
+function populateCategories() {
+  const categoryFilter = document.getElementById("categoryFilter");
+  categoryFilter.innerHTML = '<option value="all">All Categories</option>';
+
+  const uniqueCategories = [...new Set(quotes.map(quote => quote.category))];
+  uniqueCategories.forEach(category => {
+    const option = document.createElement("option");
+    option.value = category;
+    option.text = category;
+    categoryFilter.appendChild(option);
+  });
+}
+window.onload = () => {
+  // ... existing code ...
+
+  populateCategories();
+  showRandomQuote();
+  createAddQuoteForm();
+
+  // ... rest of the code ...
+}
 
 function exportQuotes() {
   const quotesJson = JSON.stringify(quotes);
@@ -116,6 +137,7 @@ function importFromJsonFile(event) {
 
   fileReader.readAsText(event.target.files[0]); // Add this line
 }
+
 // Initial setup
 window.onload = () => {
   // Load quotes from local storage
