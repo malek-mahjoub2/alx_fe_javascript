@@ -205,6 +205,7 @@ async function syncQuotes() {
     // Update the UI
     populateCategories();
     showRandomQuote();
+    alert('Quotes synced with server!');
   } catch (error) {
     console.error('Error syncing quotes:', error);
     // Handle errors, e.g., display an error message to the user
