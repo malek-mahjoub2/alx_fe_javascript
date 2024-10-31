@@ -162,3 +162,16 @@ window.onload = () => {
   showRandomQuote();
   createAddQuoteForm();
 };
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch('https://your-server-api-endpoint'); // Replace with your actual API endpoint
+    const data = await response.json();
+    quotes = data;
+    localStorage.setItem('quotes', JSON.stringify(quotes));
+    populateCategories();
+    showRandomQuote();
+  } catch (error) {
+    console.error('Error fetching quotes:', error);
+
+  }
+}
