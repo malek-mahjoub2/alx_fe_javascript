@@ -208,6 +208,7 @@ async function syncQuotes() {
   } catch (error) {
     console.error('Error syncing quotes:', error);
     // Handle errors, e.g., display an error message to the user
+    alert('Error syncing quotes. Please try again later.');
   }
 }
 
