@@ -100,15 +100,27 @@ function populateCategories() {
   });
 }
 window.onload = () => {
-  // ... existing code ...
+  
 
   populateCategories();
   showRandomQuote();
   createAddQuoteForm();
 
-  // ... rest of the code ...
+ 
 }
+function filterQuotes() {
+  const selectedCategory = document.getElementById("categoryFilter").value;
+  const filteredQuotes = selectedCategory === "all" ? quotes : quotes.filter(quote => quote.category === selectedCategory);
 
+  const quoteDisplay = document.getElementById("quoteDisplay");
+  if (filteredQuotes.length > 0) {
+      const randomIndex = Math.floor(Math.random() * filteredQuotes.length);
+      const randomQuote = filteredQuotes[randomIndex];
+      quoteDisplay.innerHTML = `<h2>${randomQuote.text}</h2><p>Category: ${randomQuote.category}</p>`;
+  } else {
+      quoteDisplay.innerHTML = "<p>No quotes found for this category.</p>";
+  }
+}
 function exportQuotes() {
   const quotesJson = JSON.stringify(quotes);
   const blob = new Blob([quotesJson], { type: 'application/json' }); // Add this line
